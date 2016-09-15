@@ -1,0 +1,12 @@
+  10 LET ti=65536*PEEK 23674+256*PEEK 23673+PEEK 23672
+  20 PAPER 0: BORDER 0: LET c=43: LET d=175: LET t=0: INK 7: FOR n=0 TO 10: LET b=2+5*(t=1): PRINT AT n*2,0; PAPER b,,,,AT n-1,0; PAPER 1;TAB 10: LET t=1-t: NEXT n:
+  30 FOR o=0 TO 40 STEP 5: LET d=(d-8)
+  40 FOR x=10 TO 75+(n) STEP 13
+  50 LET c=x-(0.3*n)
+  60 FOR l=5 TO 6: PLOT c-l/2,d-l/2: DRAW l,l-l/4: DRAW -l-l/4,0: DRAW l,-l+l/4: DRAW -l/2.6,l+l/8: DRAW -l/2.6,-l-l/9: NEXT l
+  70 NEXT x
+  80 LET n=1-n
+  90 NEXT o
+ 100 LET ti=65536*PEEK 23674+256*PEEK 23673+PEEK 23672-ti
+ 110 PRINT #1;AT 0,0;"Duration: ";ti/50;" s"
+ 120 PAUSE 0

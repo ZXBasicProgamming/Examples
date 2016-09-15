@@ -1,0 +1,27 @@
+Check 7D7B99DD
+Auto 8224
+  10 FOR n=0 TO 7 STEP 2: POKE USR "A"+n,170: POKE USR "A"+n+1,85: NEXT n
+   1 REM THIS IS AN UPDATE
+  20 BORDER 0: PAPER 0: CLS
+  30 LET c$=""
+  35 PRINT #0;"One moment!"
+  50 FOR i=0 TO 7
+  60 FOR p=0 TO 7
+  70 PRINT INK i; PAPER p;CHR$ 144;
+  80 IF NOT i+p THEN PRINT INK i; PAPER p;" ";
+  90 LET c$=c$+CHR$ 16+CHR$ i+CHR$ 17+CHR$ p+CHR$ 144
+ 100 NEXT p
+ 110 NEXT i
+ 130 CLS
+ 140 LET d$=c$(5 TO 60)
+ 150 LET d$=d$: LET s=5: LET l=45
+ 160 FOR a=0 TO 250 STEP 5
+ 170 PRINT AT 21,2;c$(s+a TO l+a)+c$(s+a TO l+a)+c$(s+a TO l+a);
+ 180 RANDOMIZE USR 3280
+ 190 NEXT a
+ 200 FOR a=250 TO 0 STEP -5
+ 210 PRINT AT 21,2;c$(s+a TO l+a);c$(s+a TO l+a);c$(s+a TO l+a);
+ 211 RANDOMIZE USR 3280
+ 220 NEXT a
+ 230 PRINT c$(1 TO 10)
+ 240 GO TO 160
