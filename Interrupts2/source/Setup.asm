@@ -19,7 +19,7 @@ IM2Address	EQU 39321
 START		EQU 39359
 
 
-	OUTPUT START.bin
+	OUTPUT StartAdd.bin
 
 	ORG START
 MAIN
@@ -84,9 +84,14 @@ IM2Routine:
 	NOP
 	NOP
 ; @ 33024 define 257 byte IM2table to contain pointer to $B000 / 45056
-;	OUTPUT imtable.bin
-
-;	ORG IM2TABLEADD
+	OUTPUT imoff.bin
+	
+	DI
+	IM 1
+	EI
+	CALL PT3PLAY
+	RET
+	;	ORG IM2TABLEADD
 
 ;IM2Table:
 ;	DEFS          257
