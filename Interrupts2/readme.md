@@ -2,9 +2,14 @@ Interrupt Driven Music in BASIC
 David Saphier 2016
 
 With help from Adrian Brown for the IM2 logic
+
 VT2 routine - Sergy Bulba
+
 bas2tap - Martijn van der Heide
+
 bin2ap - 2009 mike/zeroteam
+
+ZX7 decoder by Einar Saukas, Antonio Villena & Metalbrain
 
 Intro
 -----
