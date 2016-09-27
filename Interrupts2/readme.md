@@ -27,10 +27,13 @@ If your song makes you creep over 49152, you will no longer be able to use use 1
 You can also try dropping the pt3 files onto the script. Use Vortex Tracker II to convert other formats.
 
 https://github.com/andybalaam/bas2tap
+
 https://sourceforge.net/projects/zxspectrumutils/
+
 http://bulba.untergrund.net/vortex_e.htm
 
 https://www.facebook.com/groups/ZXBasic/
+
 https://github.com/ZXBasicProgamming/
 
 Thanks and enjoy!
