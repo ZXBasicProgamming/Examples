@@ -115,6 +115,27 @@ IF %M% == 1 (
 
 	tools\bin2tap -append -o %OUTPUT% tools\output.bin -a %IM2Address% >>LOG.log
 
+	echo Compressing with zx7...
+
+	DEL tools\output.bin.zx7 2> NUL
+	DEL tools\compressed.bin 2> NUL 
+
+	tools\zx7 tools\output.bin
+
+	copy /b tools\zx7.bin+tools\output.bin.zx7 tools\compressed.bin > NUL
+
+	echo 10 REM loader by bin2tap1.2 >>tools\IMCompress.bas
+	echo 20 BORDER VAL "0": PAPER VAL "0": INK VAL "7" >tools\IMCompress.bas
+	echo 30 CLEAR VAL "34920" >>tools\IMCompress.bas
+	echo 50 LOAD "IMCompress" CODE >>tools\IMCompress.bas
+	echo 60 RANDOMIZE USR VAL "34921" >>tools\IMCompress.bas
+	echo 70 RANDOMIZE USR 39359 >>tools\IMCompress.bas
+
+	tools\BAS2TAP -a0 tools\IMCompress.bas IMCompressed.tap
+
+	tools\bin2tap -append -o IMCompressed.tap tools\compressed.bin -a 34921 
+	REM tools\bin2tap -b -c 34920 -r 32921 -hp -o IMCompressedheadlerss.tap tools\compressed.bin -a 34921 
+
 	echo.
 	echo LOAD "" CODE %IM2Address%
 	echo POKE %PT3PLAY%+1,%LB%: POKE %PT3PLAY%+2,%HB%
@@ -130,7 +151,9 @@ IF %M% == 1 (
 
 	)
 
-DEL tools\%BASF% >>LOG.log
+	DEL tools\%BASF% >>LOG.log
+	DEL tools\output.bin.zx7
+	DEL tools\compressed.bin
 
 IF NOT EXIST %OUTPUT% (
 	echo No output created, check log )
