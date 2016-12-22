@@ -6,7 +6,7 @@ Music JINGLE BELLS BY clause-EA's the SOFT / ATS'97)
 
 Also uses Vortex Tracker play routine by Sergei Bulba 
 
-Some elements where compressed with zx7 by Einar Saukas
+Some elements were compressed with zx7 by Einar Saukas
 
 Final compiled version is in the temp.tap, main source is  : snow_pixel_music.bas
 
