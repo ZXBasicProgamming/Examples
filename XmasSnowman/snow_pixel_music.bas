@@ -96,7 +96,7 @@ paper 0
 ink 7 
 cls
 
-pause 0
+'pause 0
 
 'SUB setupmusic()
 	
@@ -152,13 +152,12 @@ paint(2,6,28,12,0)
 putChars(2,6,28,12,@merry2)
 
 i=0
-for x=2 to 28
+for x=2 to 29
 	for i=0 to 7
 	paint(x,6,1,6,i)
 	paint(28-x,12,1,6,i)
 	pause 1
-	next 
-	
+	next 	
 next 
 
 pause 200 
@@ -1502,4 +1501,4 @@ snowman2:
 		defb 00h
 		defb 00h
 		defb 00h
-		END ASM   
+		END ASM    
