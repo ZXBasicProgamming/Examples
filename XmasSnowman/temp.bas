@@ -91,6 +91,13 @@ dzx7s_next_bit:
 	END ASM 
 end sub
 
+border 0
+paper 0
+ink 7 
+cls
+
+'pause 0
+
 'SUB setupmusic()
 	
 	memcopy(@Ints, $FCFC, 30)
@@ -101,10 +108,7 @@ end sub
 
 'END SUB 
 
-border 0
-paper 0
-ink 7 
-cls
+
 
 const flakes as ubyte=50
 
@@ -118,7 +122,8 @@ dim n as ubyte
 dim p as ubyte
 dim f as ubyte
 dim a as ubyte
-
+dim ct as uinteger 
+dim fr, tr as ubyte
 ' set up snow 
 
 for n=0 to flakes
@@ -133,23 +138,33 @@ next
 
 'memcopy(@merry, 16384, 6144)
 
-paint(2,8,28,12,0)
-putChars(2,8,28,12,@merry2)
+FUNCTION ti AS float
+
+	RETURN 256 * PEEK(23673) + PEEK (23672)
+	
+	'RETURN INT((65536 * PEEK (23674) + 256 * PEEK(23673) + PEEK (23672)))
+	
+END FUNCTION
+
+
+
+paint(2,6,28,12,0)
+putChars(2,6,28,12,@merry2)
 
 i=0
-for x=2 to 28
+for x=2 to 29
 	for i=0 to 7
-	paint(x,8,1,12,i)
+	paint(x,6,1,6,i)
+	paint(28-x,12,1,6,i)
 	pause 1
-	next 
-	
+	next 	
 next 
 
 pause 200 
 
 for n=0 to 7
 
-	paint(2,8,28,12,7-n)
+	paint(2,6,28,12,7-n)
 	
 	pause 1
 	
@@ -198,29 +213,65 @@ while inkey$=""
 	
 	next 
 
+	ct=ti()
+
 	OUT 65533,9: LET a=IN 65533:
 	
-	if a>18 THEN 
+	if ct>800
 	
-		f=f+1
+	if a<20 THEN 
 
-		if f=2 THEN 
-		
-			paintData(8,6,16,18,@snowman1)
+		paint(12,6,8,2,7)
+		paintData(8,8,17,16,@snowman2)
 		
 		else 
 		
-			paint(12,6,8,2,7)
-			paintData(8,8,17,16,@snowman2)
-	
-		end if 
-
-		if f>2 THEN 
-			f = 0 
-		END IF 	
+		paintData(8,6,16,18,@snowman1)
+		
 	
 	END IF 
 
+	end if 
+
+	if ct>800
+	
+		if a<20 then 
+
+			if fr>=0 AND fr<=3 THEN 
+				paintdata(9,0,14,5,@hoattr) ' w=14 
+				tr=0
+			elseif fr=4 THEN 
+				paintdata(1,0,29,5,@merryattr) ' w=29
+				tr=0
+			elseif fr=5 THEN 
+				paintdata(4,0,23,5,@xmasattr)	' w=23
+				tr=0
+			elseif fr=6 THEN 
+				paintdata(13,0,5,5,@loveattr) ' w=5
+				tr=0
+			elseif fr=7 THEN 
+				paintdata(11,0,11,5,@urattr)	' w=11
+				tr=0
+			elseif fr>=8 and fr<=12 THEN 
+				paintdata(0,0,31,6,@sinclairattr)	' w=31
+				tr=0
+			END IF 
+			
+			else 
+			
+				paint(0,0,31,6,7)
+				if tr=0 then
+					fr=fr+1
+					tr=1
+				end if 
+				
+		END IF 
+
+		if fr>=12 then 
+			fr=1
+		end if 
+		
+	end if 
 
 wend
 
@@ -288,6 +339,240 @@ music:
 	asm
 		incbin "jingle.pt3"
 	END asm
+
+hoattr:
+ASM 
+; attribute blocks at pixel position (y=0):
+
+defb 55
+defb 55
+defb 7
+defb 55
+defb 55
+defb 7
+defb 7
+defb 31
+defb 23
+defb 55
+defb 7
+defb 7
+defb 55
+defb 55
+
+; attribute blocks at pixel position (y=8):
+
+defb 31
+defb 55
+defb 7
+defb 31
+defb 55
+defb 7
+defb 31
+defb 23
+defb 7
+defb 31
+defb 55
+defb 7
+defb 31
+defb 55
+
+; attribute blocks at pixel position (y=16):
+
+defb 31
+defb 23
+defb 23
+defb 23
+defb 23
+defb 7
+defb 31
+defb 23
+defb 7
+defb 31
+defb 23
+defb 7
+defb 31
+defb 23
+
+; attribute blocks at pixel position (y=24):
+
+defb 31
+defb 23
+defb 7
+defb 31
+defb 23
+defb 7
+defb 31
+defb 23
+defb 7
+defb 31
+defb 23
+defb 7
+defb 7
+defb 7
+
+; attribute blocks at pixel position (y=32):
+
+defb 31
+defb 31
+defb 7
+defb 31
+defb 31
+defb 7
+defb 7
+defb 31
+defb 23
+defb 23
+defb 7
+defb 7
+defb 31
+defb 23
+end asm 
+
+merryattr:
+asm
+; attribute block at pixel position (0,0):
+
+defb 55, 7, 7, 7, 55, 7, 55, 55, 31, 55, 55, 7, 55
+
+; attribute block at pixel position (104,0):
+
+defb 55, 55, 55, 7, 7, 55, 55, 55, 55, 7, 7, 55, 55
+
+; attribute block at pixel position (208,0):
+
+defb 7, 55, 55
+
+; attribute block at pixel position (0,8):
+
+defb 31, 55, 7, 23, 55, 7, 31, 23, 7, 7, 7, 7, 31
+
+; attribute block at pixel position (104,8):
+
+defb 23, 7, 31, 55, 7, 31, 23, 7, 31, 55, 7, 31, 55
+
+; attribute block at pixel position (208,8):
+
+defb 7, 31, 55
+
+; attribute block at pixel position (0,16):
+
+defb 31, 23, 23, 23, 23, 7, 31, 23, 23, 23, 7, 7, 31
+
+; attribute block at pixel position (104,16):
+
+defb 23, 23, 23, 7, 7, 31, 23, 23, 23, 7, 7, 31, 23
+
+; attribute block at pixel position (208,16):
+
+defb 23, 23, 23
+
+; attribute block at pixel position (0,24):
+
+defb 31, 23, 7, 31, 23, 7, 31, 23, 7, 7, 7, 7, 31
+
+; attribute block at pixel position (104,24):
+
+defb 23, 7, 31, 23, 7, 31, 23, 7, 31, 23, 7, 7, 7
+
+; attribute block at pixel position (208,24):
+
+defb 7, 31, 23
+
+; attribute block at pixel position (0,32):
+
+defb 31, 31, 7, 31, 31, 7, 31, 31, 31, 31, 31, 7, 31
+
+; attribute block at pixel position (104,32):
+
+defb 31, 7, 31, 31, 7, 31, 31, 7, 31, 31, 7, 7, 31
+
+; attribute block at pixel position (208,32):
+
+defb 31, 31, 7
+end asm 
+
+xmasattr:
+asm
+defb 55, 7, 7, 7, 55, 7, 55, 7, 7, 7, 55, 7, 7, 55, 55, 55, 7, 7, 7, 55, 55, 55
+
+; attribute block at pixel position (176,0):
+
+defb 55
+
+; attribute block at pixel position (0,8):
+
+defb 31, 55, 7, 23, 55, 7, 31, 55, 7, 23, 55, 7, 31, 23, 7, 31, 23, 7, 55, 31, 7, 7
+
+; attribute block at pixel position (176,8):
+
+defb 7
+
+; attribute block at pixel position (0,16):
+
+defb 7, 23, 23, 23, 7, 7, 31, 23, 23, 23, 23, 7, 31, 23, 23, 31, 23, 7, 7, 23, 23, 23
+
+; attribute block at pixel position (176,16):
+
+defb 7
+
+; attribute block at pixel position (0,24):
+
+defb 31, 23, 7, 31, 23, 7, 31, 23, 7, 31, 23, 7, 31, 23, 7, 31, 23, 7, 7, 7, 7, 23
+
+; attribute block at pixel position (176,24):
+
+defb 31
+
+; attribute block at pixel position (0,32):
+
+defb 31, 7, 7, 7, 31, 7, 31, 31, 7, 31, 31, 7, 31, 31, 7, 31, 31, 7, 31, 31, 31, 31
+
+; attribute block at pixel position (176,32):
+
+defb 7
+end asm
+
+loveattr:
+'width =5
+asm
+defb 7, 23, 7, 23, 7
+defb 23, 23, 23, 23, 23
+defb 23, 23, 23, 23, 23
+defb 7, 23, 23, 23, 7
+defb 7, 7, 23, 7, 7
+end asm 
+
+urattr:
+' width = 11
+ASM 
+defb 55, 55, 7, 55, 55, 7, 55, 55, 55, 55, 7
+defb 55, 23, 7, 55, 23, 7, 31, 23, 7, 31, 55
+defb 31, 23, 7, 31, 23, 7, 31, 23, 23, 23, 7
+defb 31, 23, 23, 31, 23, 7, 31, 23, 7, 31, 23
+defb 7, 31, 31, 31, 7, 7, 31, 31, 7, 31, 31
+END ASM 
+
+sinclairattr:
+ASM 
+defb 7, 63, 63, 7, 63, 63, 63, 7, 63, 63, 7, 7, 7, 63, 63, 7, 63, 7, 7, 7, 7, 63
+defb 7, 7, 63
+defb 63, 63, 7, 63, 63, 7
+defb 63, 7, 7, 7, 7, 63, 7, 7, 63, 7, 63, 7, 63, 7, 7, 7, 63, 7, 7, 7, 63, 7, 63
+defb 7, 7
+defb 63, 7, 7, 63, 7, 63
+defb 63, 63, 7, 7, 7, 63, 7, 7, 63, 7, 63, 7, 63, 7, 7, 7, 63, 7, 7, 7, 63, 63, 63
+defb 7, 7
+defb 63, 7, 7, 63, 63, 7
+defb 7, 63, 63, 7, 7, 63, 7, 7, 63, 7, 63, 7, 63, 7, 7, 7, 63, 7, 7, 7, 63, 7, 63
+defb 7, 7
+defb 63, 7, 7, 63, 7, 63
+defb 7, 7, 63, 7, 7, 63, 7, 7, 63, 7, 63, 7, 63, 7, 7, 7, 63, 7, 7, 7, 63, 7, 63
+defb 7, 7
+defb 63, 7, 7, 63, 7, 63
+defb 63, 63, 7, 7, 63, 63, 63, 7, 63, 7, 63, 7, 7, 63, 63, 7, 7, 63, 63, 7, 63, 7
+defb 63, 7, 63
+defb 63, 63, 7, 63, 7, 63
+END ASM 
 	
 merry2:
 asm
@@ -1216,4 +1501,4 @@ snowman2:
 		defb 00h
 		defb 00h
 		defb 00h
-		END ASM  
+		END ASM    
